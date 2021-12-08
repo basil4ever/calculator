@@ -4,7 +4,7 @@ let sign = '';
 let finish = false;
 
 const digit = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.'];
-const action = ['-', '+', '*', '/'];
+const action = ['-', '+', '*', '/', '%', '+/-'];
 
 const out = document.querySelector('.calc-screen p');
 
@@ -28,8 +28,14 @@ document.querySelector('.buttons').onclick = (event) => {
 
     if (digit.includes(key)) {
         if (b === '' && sign === '') {
-        a += key;
-        out.textContent = a;
+
+            if (key === '.' && a.includes('.')) {
+                a += '';
+                out.textContent = a;
+            } else {
+                a += key;
+                out.textContent = a;
+            }
         }
         else if (a!=='' && b!=='' && finish) {
             b = key;
@@ -37,8 +43,13 @@ document.querySelector('.buttons').onclick = (event) => {
             out.textContent = b;
         }
         else {
-            b += key;
-            out.textContent = b;
+            if (key === '.' && b.includes('.')) {
+                b += '';
+                out.textContent = b;
+            } else {
+                b += key;
+                out.textContent = b;
+            }
         }
         return;
     }
@@ -48,6 +59,7 @@ document.querySelector('.buttons').onclick = (event) => {
         out.textContent = sign;
         return;
     }
+
 
     if (key === '=') {
         if ( b === '') b = a;
@@ -70,6 +82,9 @@ document.querySelector('.buttons').onclick = (event) => {
                     return;
                 }
                 a = a / b;
+                break;
+            case "%":
+                a = (a / 100) * b;
                 break;
         }
         finish = true;
